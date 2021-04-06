@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
     private var mMyLove: ImageView? = null
     private var mMyLoveIdleBasha: ImageView? = null
     private var mMyLoveIdle: ImageView? = null
-    private val mFrameLayout: FrameLayout? = null
     private var mProgressAnimator: ValueAnimator? = null
     private var mColorAnimator: ValueAnimator? = null
     private var mAlphaAnimator: ObjectAnimator? = null
