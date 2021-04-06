@@ -90,6 +90,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.组合属性动画，实现多种动画的组合"/>
+
         <ImageView
             android:id="@+id/my_love"
             android:layout_width="245dp"
@@ -99,10 +104,16 @@
             android:src="@drawable/my_love_idle"
             android:layout_marginBottom="20dp"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2.transationDrawble动画，实现图片平滑切换"/>
+
         <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible">
+            android:visibility="visible"
+            android:layout_gravity="center">
 
             <ImageView
                 android:id="@+id/my_love_basha"
