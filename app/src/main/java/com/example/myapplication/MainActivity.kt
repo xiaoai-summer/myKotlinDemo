@@ -1,19 +1,24 @@
 package com.example.myapplication
 
-import android.animation.Animator
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
+import android.animation.*
 import android.animation.ValueAnimator.AnimatorUpdateListener
 import android.annotation.SuppressLint
 import android.graphics.drawable.TransitionDrawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
-import android.widget.*
+import android.view.animation.Animation
+import android.view.animation.TranslateAnimation
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
+    private var mTransBtn: Button? = null
     private var mStartBtn: Button? = null
     private var mEndBtn: Button? = null
     private var mCancelBtn: Button? = null
@@ -30,9 +35,11 @@ class MainActivity : AppCompatActivity() {
     private var mScaleAnimatorX: ObjectAnimator? = null
     private var mScaleAnimatorY: ObjectAnimator? = null
     private var mAnimatorSet: AnimatorSet? = null
+    private val mHandler = Handler(Looper.getMainLooper())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        mTransBtn = findViewById(R.id.trans_btn)
         mStartBtn = findViewById(R.id.start_btn)
         mEndBtn = findViewById(R.id.end_btn)
         mCancelBtn = findViewById(R.id.cancel_btn)
@@ -46,6 +53,29 @@ class MainActivity : AppCompatActivity() {
         initValueAnimator()
         initObjectAnimator()
         initOnClickListener()
+
+        initXmlObjectAnimator()
+        initTransationAnimation()
+    }
+
+    private fun initTransationAnimation() {
+        val translateAnimation = TranslateAnimation(Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 1.5f, Animation.RELATIVE_TO_SELF, 0f, Animation.RELATIVE_TO_SELF, 0f)
+        translateAnimation.fillAfter = true
+        mHandler.postDelayed(Runnable { mTransBtn?.startAnimation(translateAnimation) }, 2000)
+    }
+
+    private fun initXmlObjectAnimator() {
+        //加载xml中属性动画
+        val animatorset = AnimatorInflater.loadAnimator(this, R.animator.animator_set) as AnimatorSet
+        val animator = AnimatorInflater.loadAnimator(this, R.animator.animator_alpha)
+
+        //使用组合属性动画
+        animatorset.setTarget(mMyLove)
+        animatorset.start()
+
+        //使用属性动画
+        animator.setTarget(mMyLove)
+        animator.start()
     }
 
     private fun initTransationDrawable() {
@@ -69,6 +99,9 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("NewApi")
     private fun initOnClickListener() {
+        mTransBtn?.setOnClickListener {
+            Toast.makeText(this@MainActivity, getString(R.string.click_trans_btn), Toast.LENGTH_SHORT).show()
+        }
         mStartBtn?.setOnClickListener {
             mProgressAnimator?.start()
             mColorAnimator?.start()
@@ -127,5 +160,10 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "MainActivity"
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mHandler.removeCallbacksAndMessages(null);
     }
 }
